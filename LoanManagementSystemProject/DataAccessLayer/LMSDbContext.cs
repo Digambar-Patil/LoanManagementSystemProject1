@@ -14,10 +14,21 @@ namespace LoanManagementSystemProject.DataAccessLayer
 
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<AdminModel>().HasIndex(u => u.EmailAddress).IsUnique();
+            base.OnModelCreating(builder);
+            builder.Entity<UserModel>().HasIndex(u => u.EmailAddress).IsUnique();
+        }
+
+
         public DbSet<UserModel> UserModels { get; set; }
         public DbSet<AdminModel> AdminModels { get; set; }
         public DbSet<LoanModel> LoanModels { get; set; }
         public DbSet<LoanMaster> LoanMasters { get; set; }
+        public DbSet<UserModel> UserInfo { get; set; }
+        public DbSet<AdminModel> AdminInfo { get; set; }
     }
 
 

@@ -17,5 +17,9 @@ namespace LoanManagementSystemProject.Repository_DI
         Task<AdminModel> DeleteAdmin(int id);
 
         Task<List<AdminModel>> ShowAllAdmin();
+
+        Task<string> AdminForgotPassword(string email);
+
+        Task<int> GetAdminId(string email);
     }
 }

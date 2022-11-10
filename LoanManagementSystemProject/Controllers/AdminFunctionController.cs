@@ -1,4 +1,6 @@
-﻿using LoanManagementSystemProject.Repository_DI;
+﻿using LoanManagementSystemProject.Models;
+using LoanManagementSystemProject.Repository_DI;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +12,7 @@ namespace LoanManagementSystemProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AdminFunctionController : ControllerBase
     {
         private readonly IAdminFunctions adminFunctions;
@@ -31,10 +34,32 @@ namespace LoanManagementSystemProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ApproveLoan(int loanNumber, string status)
+        public async Task<IActionResult> ApproveLoan(int adminId, int loanNumber, string status)
         {
-            var ar = await adminFunctions.ApproveOrRejectLoan(loanNumber, status);
+            var ar = await adminFunctions.ApproveOrRejectLoan(adminId, loanNumber, status);
+            if(ar != null) { 
+                return Ok(ar);
+            }
+            else
+            {
+                return NotFound(ar);
+            }
+        }
+
+        [HttpPost("RegisterLoan")]
+        public async Task<IActionResult> RegisterLoan(LoanModel regloan)
+        {
+            var ar = await adminFunctions.RegisterLoan(regloan);
             return Ok(ar);
         }
+
+        [HttpDelete("DeleteLoan")]
+        public async Task<IActionResult> DeleteLoan(int id)
+        {
+            var ar = await adminFunctions.DeleteLoan(id);
+            return Ok(ar);
+        }
+
+
     }
 }

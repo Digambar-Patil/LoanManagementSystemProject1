@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanManagementSystemProject.Migrations
 {
     [DbContext(typeof(LMSDbContext))]
-    [Migration("20221025072640_initLMS")]
-    partial class initLMS
+    [Migration("20221110102040_initReg")]
+    partial class initReg
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,7 +34,7 @@ namespace LoanManagementSystemProject.Migrations
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -47,7 +47,10 @@ namespace LoanManagementSystemProject.Migrations
 
                     b.HasKey("AdminId");
 
-                    b.ToTable("AdminModels");
+                    b.HasIndex("EmailAddress")
+                        .IsUnique();
+
+                    b.ToTable("AdminModel");
                 });
 
             modelBuilder.Entity("LoanManagementSystemProject.Models.LoanMaster", b =>
@@ -138,7 +141,7 @@ namespace LoanManagementSystemProject.Migrations
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("Income")
                         .HasColumnType("float");
@@ -159,7 +162,10 @@ namespace LoanManagementSystemProject.Migrations
 
                     b.HasKey("CustomerId");
 
-                    b.ToTable("UserModels");
+                    b.HasIndex("EmailAddress")
+                        .IsUnique();
+
+                    b.ToTable("UserModel");
                 });
 
             modelBuilder.Entity("LoanManagementSystemProject.Models.LoanMaster", b =>

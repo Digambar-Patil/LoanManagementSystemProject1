@@ -32,7 +32,7 @@ namespace LoanManagementSystemProject.Migrations
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -45,7 +45,10 @@ namespace LoanManagementSystemProject.Migrations
 
                     b.HasKey("AdminId");
 
-                    b.ToTable("AdminModels");
+                    b.HasIndex("EmailAddress")
+                        .IsUnique();
+
+                    b.ToTable("AdminModel");
                 });
 
             modelBuilder.Entity("LoanManagementSystemProject.Models.LoanMaster", b =>
@@ -136,7 +139,7 @@ namespace LoanManagementSystemProject.Migrations
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("Income")
                         .HasColumnType("float");
@@ -157,7 +160,10 @@ namespace LoanManagementSystemProject.Migrations
 
                     b.HasKey("CustomerId");
 
-                    b.ToTable("UserModels");
+                    b.HasIndex("EmailAddress")
+                        .IsUnique();
+
+                    b.ToTable("UserModel");
                 });
 
             modelBuilder.Entity("LoanManagementSystemProject.Models.LoanMaster", b =>

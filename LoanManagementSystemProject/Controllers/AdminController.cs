@@ -1,5 +1,6 @@
 ﻿using LoanManagementSystemProject.Models;
 using LoanManagementSystemProject.Repository_DI;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +12,7 @@ namespace LoanManagementSystemProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AdminController : ControllerBase
     {
         readonly IAdmin admin = null;
@@ -49,10 +51,25 @@ namespace LoanManagementSystemProject.Controllers
         }
 
         [HttpGet]
+        //[AllowAnonymous]
         public async Task<IActionResult> ShowAll()
         {
             var ar = await admin.ShowAllAdmin();
             return Ok(ar);
+        }
+
+        [HttpGet("Forgotpassword")]
+        public async Task<IActionResult> AdminForgotPassword(string email)
+        {
+            var res = await admin.AdminForgotPassword(email);
+            return Ok(res);
+        }
+
+        [HttpGet("GetAdminId")]
+        public async Task<IActionResult> GetAdminId(string email)
+        {
+            var res = await admin.GetAdminId(email);
+            return Ok(res);
         }
     }
 }

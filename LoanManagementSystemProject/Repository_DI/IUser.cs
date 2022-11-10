@@ -15,5 +15,8 @@ namespace LoanManagementSystemProject.Repository_DI
         Task<UserModel> UpdateUser(int id, UserModel user);
 
         Task<UserModel> DeleteUser(int id);
+
+        Task<string> ForgotPassword(string email);
+
     }
 }

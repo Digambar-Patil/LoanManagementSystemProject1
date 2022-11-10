@@ -64,5 +64,31 @@ namespace LoanManagementSystemProject.Repository_DI
             }
             return ar;
         }
+
+        public async Task<string> AdminForgotPassword(string email)
+        {
+            var ar = await lms_DbContext.AdminModels.Where(x => x.EmailAddress == email).FirstOrDefaultAsync();
+            if (ar == null)
+            {
+                return null;
+            }
+            else
+            {
+                return ar.Password;
+            }
+        }
+
+        public async Task<int> GetAdminId(string email)
+        {
+            var ar = await lms_DbContext.AdminModels.Where(x => x.EmailAddress == email).FirstOrDefaultAsync();
+            if (ar == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return ar.AdminId;
+            }
+        }
     }
 }

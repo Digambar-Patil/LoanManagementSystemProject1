@@ -15,7 +15,7 @@ namespace LoanManagementSystemProject.Repository_DI
         {
             this.lms_DbContext = lms_DbContext;
         }
-        public async Task<LoanMaster> ApplyLoan(int userId, int loanId, int adminId, int income, int LoanAmout, string PropertyAddress)
+        public async Task<LoanMaster> ApplyLoan(int userId, int loanId, int income, int LoanAmout, string PropertyAddress)
         {
             LoanMaster addLoan = new LoanMaster();
             addLoan.CustomerId = userId;
@@ -25,7 +25,7 @@ namespace LoanManagementSystemProject.Repository_DI
             addLoan.LoanStatus = "Applied";
             addLoan.Income = income;
             addLoan.LoanId = loanId;
-            addLoan.AdminId = adminId;
+            addLoan.AdminId = loanId;
 
             lms_DbContext.LoanMasters.Add(addLoan);
             await lms_DbContext.SaveChangesAsync();
@@ -38,17 +38,19 @@ namespace LoanManagementSystemProject.Repository_DI
             return ar;
         }
 
-        public async Task<LoanMaster> GetLoanStatus(int id)
+        public async Task<List<LoanMaster>> GetLoanStatus(int customerid)
         {
-            var ar = await lms_DbContext.LoanMasters.Where(x => x.LoanId == id).FirstOrDefaultAsync();
-            if (ar != null)
+            //var ar = await lMSDbContext.LoanMasters.Where(x => x.LoanNumber == id).FirstOrDefaultAsync();
+            var ar = await lms_DbContext.LoanMasters.ToListAsync();
+            List<LoanMaster> loans = new List<LoanMaster>();
+            foreach (LoanMaster loan in ar)
             {
-                return ar;
+                if (loan.CustomerId == customerid)
+                {
+                    loans.Add(loan);
+                }
             }
-            else
-            {
-                return null;
-            }
+            return loans;
         }
     }
 }

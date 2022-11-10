@@ -7,11 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LoanManagementSystemProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserFunctionController : ControllerBase
     {
         private readonly IUserFunctions userFunctions = null;
@@ -23,10 +25,10 @@ namespace LoanManagementSystemProject.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> ApplyForLoan(int userId, int loanId, int adminId, int income, int LoanAmout, string PropertyAddress)
+        public async Task<IActionResult> ApplyForLoan(int userId, int loanId, int income, int LoanAmout, string PropertyAddress)
         {
             
-            var query = await userFunctions.ApplyLoan(userId, loanId, adminId,  income,  LoanAmout,  PropertyAddress);
+            var query = await userFunctions.ApplyLoan(userId, loanId,  income,  LoanAmout,  PropertyAddress);
             return Ok(query);
             
         }

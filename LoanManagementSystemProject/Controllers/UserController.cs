@@ -1,5 +1,6 @@
 ﻿using LoanManagementSystemProject.Models;
 using LoanManagementSystemProject.Repository_DI;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +12,7 @@ namespace LoanManagementSystemProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUser user = null;
@@ -46,6 +48,13 @@ namespace LoanManagementSystemProject.Controllers
         {
             var ar1 = await user.DeleteUser(id);
             return Ok(ar1);
+        }
+
+        [HttpGet("Forgotpassword")]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var res = await user.ForgotPassword(email);
+            return Ok(res);
         }
     }
 }

@@ -5,11 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using LoanManagementSystemProject.DataAccessLayer;
+using NLog;
 
 namespace LoanManagementSystemProject.Repository_DI
 {
     public class UserRepository : IUser
     {
+        static Logger logger = LogManager.GetLogger("myAPP");
         readonly LMSDbContext lms_DbContext = null;
         public UserRepository(LMSDbContext lms_DbContext)
         {
@@ -24,9 +26,31 @@ namespace LoanManagementSystemProject.Repository_DI
         }
 
 
-        public async Task<UserModel> Login(int id,string Password)
+        public async Task<UserModel> Login(int id, string Password)
         {
+            logger.Info("enter user credentials:");
+
+
             var ar = await lms_DbContext.UserModels.Where(x => x.CustomerId == id && x.Password == Password).FirstOrDefaultAsync();
+            try
+            {
+                if (ar != null)
+                {
+
+                    logger.Info("login success");
+                }
+                else
+                {
+                    logger.Info("login failed");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                logger.Error("login error=" + ex.Message);
+            }
+
             return ar;
         }
 
@@ -56,6 +80,20 @@ namespace LoanManagementSystemProject.Repository_DI
                 await lms_DbContext.SaveChangesAsync();
             }
             return ar;
+        }
+
+        public async Task<string> ForgotPassword(string email)
+        {
+            var ar = await lms_DbContext.UserModels.Where(x => x.EmailAddress == email).FirstOrDefaultAsync();
+            if (ar == null)
+            {
+                return null;
+            }
+            else
+            {
+                return (ar.Password);
+
+            }
         }
     }
 }
